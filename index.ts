@@ -29,6 +29,12 @@ app.get('/', (req: Request, res: Response) => {
 import articleController from './controllers/articleController';
 app.use('/article', articleController);
 
+
+import commentController from "./controllers/commentController";
+app.use('/comment', commentController);
+
+
+
 app.listen(3006,() => {
   console.log(`[server]: Server is running at http://localhost:3006`);
 });

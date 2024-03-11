@@ -18,7 +18,7 @@ router.post('/', async (req: Request, res: Response) => {
     }
 })
 
-router.get('/article', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     try{
       const data = await Article.find();
       res.json(data)
@@ -29,7 +29,7 @@ router.get('/article', async (req: Request, res: Response) => {
   })
 
   
-router.get('/article/:id', async (req: Request, res: Response) => {
+router.get('/:id', async (req: Request, res: Response) => {
     try{
       const data = await Article.findById(req.params.id);
       res.json(data)
@@ -39,7 +39,7 @@ router.get('/article/:id', async (req: Request, res: Response) => {
     }
   })
 
-router.delete('/article/:id', async (req: Request, res: Response) => {
+router.delete('/:id', async (req: Request, res: Response) => {
     try{
       const id = req.params.id;
       await Article.findByIdAndDelete(id);
@@ -51,7 +51,7 @@ router.delete('/article/:id', async (req: Request, res: Response) => {
     }
 })
 
-router.put('/article/:id', async (req: Request, res: Response) => {
+router.put('/:id', async (req: Request, res: Response) => {
     try{
       const id = req.params.id;
       const updatedData = req.body;
