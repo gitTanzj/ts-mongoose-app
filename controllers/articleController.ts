@@ -1,7 +1,15 @@
 import { Request, Response, Router } from "express";
 import Article from "../models/article";
+import Comment from "../models/comment";
 
 const router: Router = Router();
+
+interface Comment {
+    date: Date;
+    content: string;
+    article: string;
+    _id: string;
+}
 
 router.post('/', async (req: Request, res: Response) => {
     const data = new Article({
@@ -67,5 +75,44 @@ router.put('/:id', async (req: Request, res: Response) => {
       res.status(500).json({message: error})
     }
   })
+
+  router.post('/article/:id/comment', async (req: Request, res: Response) => {
+    try{
+        const id = req.params.id;
+        const options = { new: true }; 
+        
+        const data = new Comment({
+            date: new Date(),
+            content: req.body.content,
+            article: id
+        })
+
+        const comment = await data.save();
+        const result = await Article.findByIdAndUpdate(
+            { _id: id }, 
+            { $push: { 
+                comments: comment._id
+            }
+            }, options
+        )
+        res.send(result)
+    }
+    catch(error){
+        res.status(500).json({message: error})
+    }
+})
+
+router.get('/article/:id/comment', async (req: Request, res: Response) => {
+    try{
+      const id = req.params.id;
+  
+      const result = await Article.findById(id).populate("comments");
+    
+      res.send(result);
+    }
+    catch(error){
+      res.status(500).json({message: error})
+    }
+})
 
 export default router;

@@ -6,7 +6,8 @@ const router: Router = Router();
 router.post('/', async (req: Request, res: Response) => {
   const data = new Comment({
       date: new Date(),
-      content: req.body.content
+      content: req.body.content,
+      article: req.body.article
   })
 
   try {
@@ -18,15 +19,15 @@ router.post('/', async (req: Request, res: Response) => {
   }
 })
 
-router.get('/', async (req: Request, res: Response) => {
-  try{
-    const data = await Comment.find();
-    res.json(data)
-  }
-  catch(error){
-    res.status(500).json({message: error})
-  }
-})
+router.get('/comment', async (req: Request, res: Response) => {
+    try{
+      const data = await Comment.find().populate('article');
+      res.json(data)
+    }
+    catch(error){
+      res.status(500).json({message: error})
+    }
+  })
 
 router.get('/:id', async (req: Request, res: Response) => {
   try{
